@@ -72,3 +72,81 @@ const menu = [
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
 ];
+
+const sectionCenter = document.querySelector(".section-center");
+const buttonContainer = document.querySelector(".btn-container");
+
+document.addEventListener("DOMContentLoaded", () => {
+  displayMenu(menu);
+  displayMenuButtons();
+});
+
+const displayMenu = (menu) => {
+  let displayItems = menu.map((menuItem) => {
+    return `<article class="menu-item">
+          <img src=${menuItem.img} alt="menu item" class="photo" />
+          <div class="item-info">
+            <header>
+              <h4>${menuItem.title}</h4>
+              <h4 class="price">${menuItem.price}</h4>
+            </header>
+            <p class="item-text">
+              ${menuItem.desc}
+            </p>
+          </div>
+        </article>`;
+  });
+
+  //Below code will combine displayItems array in one HTML template.
+  //there will be no comma in join , else it will add unnecesssary comma to every section div.
+  modifiedDisplayItems = displayItems.join("");
+  // console.log(modifiedDisplayItems)
+
+  return (sectionCenter.innerHTML = modifiedDisplayItems);
+};
+
+const displayMenuButtons = () => {
+
+  //get categories to show buttons
+  const categories = menu.reduce(
+    (values, item) => {
+      if (!values.includes(item.category)) {
+        values.push(item.category);
+      }
+      return values;
+    },
+    ["all"]
+  );
+
+  // console.log("categories --> ",categories)
+
+  //To show all the category buttons
+  const showCategoryButtons = categories
+    .map((item) => {
+      return `<button type="button" class="filter-btn" data-id=${item}>${item}</button>`;
+    })
+    .join("");
+
+  buttonContainer.innerHTML = showCategoryButtons;
+
+  //select all the filter buttons
+  const selectFilteredButtons = buttonContainer.querySelectorAll(".filter-btn");
+
+  //Implementation of button filters
+  selectFilteredButtons.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      const category = event.currentTarget.dataset.id;
+      const showFilteredMenuList = menu.filter((item) => {
+        if (category === item.category) {
+          return item;
+        }
+      });
+      
+      if (category === "all") {
+        displayMenu(menu);
+      }else{
+        displayMenu(showFilteredMenuList);
+      }
+    });
+  });
+};
