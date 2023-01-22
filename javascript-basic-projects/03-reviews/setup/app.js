@@ -72,6 +72,6 @@ prevBtn.addEventListener("click", () => {
 
 //To generate random number for surprie me button
 randomBtn.addEventListener("click", () => {
-  const randomNum = Math.floor(Math.random() * reviews.length); 
+  const randomNum = Math.floor(Math.random() * reviews.length);
   addInfo(reviews[randomNum]);
 });
